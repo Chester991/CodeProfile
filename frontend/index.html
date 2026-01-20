@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeProfile - Competitive Programming Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <div id="app">
+      <nav class="navbar">
+        <div class="nav-brand">
+          <h1>CodeProfile</h1>
+        </div>
+        <div class="nav-menu">
+          <button id="darkModeToggle" class="btn btn-icon" title="Toggle Dark Mode">
+            <span id="darkModeIcon">🌙</span>
+          </button>
+          <button id="loginBtn" class="btn btn-primary">Login</button>
+          <button id="registerBtn" class="btn btn-secondary">Register</button>
+          <div id="userMenu" class="user-menu hidden">
+            <span id="userDisplay"></span>
+            <button id="logoutBtn" class="btn btn-logout">Logout</button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Auth Modal -->
+      <div id="authModal" class="modal hidden">
+        <div class="modal-content">
+          <button class="close-modal">&times;</button>
+          <h2 id="modalTitle">Login</h2>
+          <form id="authForm">
+            <div id="usernameGroup" class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <!-- Platform usernames for registration -->
+            <div id="platformFields" class="platform-fields hidden">
+              <h3>Platform Usernames (Optional)</h3>
+              <div class="form-group">
+                <label for="regLeetcode">LeetCode Username</label>
+                <input type="text" id="regLeetcode" name="regLeetcode" placeholder="Enter LeetCode username">
+              </div>
+              <div class="form-group">
+                <label for="regCodeforces">Codeforces Username</label>
+                <input type="text" id="regCodeforces" name="regCodeforces" placeholder="Enter Codeforces username">
+              </div>
+              <div class="form-group">
+                <label for="regCodechef">CodeChef Username</label>
+                <input type="text" id="regCodechef" name="regCodechef" placeholder="Enter CodeChef username">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Hero Section with Public Search -->
+      <section id="heroSection" class="hero-section">
+        <h2>Track Your Competitive Programming Journey</h2>
+        <p>Search any username to view stats from LeetCode, Codeforces, and CodeChef</p>
+
+        <div class="search-container">
+          <input type="text" id="publicSearchInput" placeholder="Enter username..." class="search-input">
+          <select id="platformSelect" class="platform-select" aria-label="Select coding platform">
+            <option value="leetcode">LeetCode</option>
+            <option value="codeforces">Codeforces</option>
+            <option value="codechef">CodeChef</option>
+          </select>
+          <button id="publicSearchBtn" class="btn btn-primary">Search</button>
+        </div>
+      </section>
+
+      <!-- Public Stats Display -->
+      <section id="publicStatsSection" class="stats-section hidden">
+        <h3>Stats for <span id="publicUsername"></span></h3>
+        <div class="stats-grid">
+          <div id="publicStatsCard" class="stat-card">
+            <div id="publicCardHeader" class="card-header">
+              <h3 id="publicPlatformName">Platform</h3>
+            </div>
+            <div id="publicCardBody" class="card-body">
+              <!-- Stats will be dynamically inserted -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Popular Users Section -->
+      <section id="popularSection" class="popular-section">
+        <h2>Popular Competitive Programmers</h2>
+        <div class="platform-tabs">
+          <button class="tab-btn active" data-platform="leetcode">LeetCode</button>
+          <button class="tab-btn" data-platform="codeforces">Codeforces</button>
+          <button class="tab-btn" data-platform="codechef">CodeChef</button>
+        </div>
+        <div id="popularUsersGrid" class="popular-users-grid">
+          <!-- Popular users will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Dashboard (for logged in users) -->
+      <div id="dashboard" class="dashboard hidden">
+        <div class="dashboard-header">
+          <h2>Welcome, <span id="dashboardUsername"></span>!</h2>
+        </div>
+
+        <div class="settings-section">
+          <h3>Your Platform Usernames</h3>
+          <form id="platformForm" class="platform-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="leetcodeUsername">LeetCode</label>
+                <input type="text" id="leetcodeUsername" name="leetcodeUsername" placeholder="Enter LeetCode username">
+              </div>
+              <button type="button" class="btn btn-fetch" data-platform="leetcode">Fetch Data</button>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="codeforcesUsername">Codeforces</label>
+                <input type="text" id="codeforcesUsername" name="codeforcesUsername"
+                  placeholder="Enter Codeforces username">
+              </div>
+              <button type="button" class="btn btn-fetch" data-platform="codeforces">Fetch Data</button>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="codechefUsername">CodeChef</label>
+                <input type="text" id="codechefUsername" name="codechefUsername" placeholder="Enter CodeChef username">
+              </div>
+              <button type="button" class="btn btn-fetch" data-platform="codechef">Fetch Data</button>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+          </form>
+        </div>
+
+        <div class="stats-grid">
+          <div id="leetcodeCard" class="stat-card hidden">
+            <div class="card-header leetcode">
+              <h3>LeetCode</h3>
+            </div>
+            <div class="card-body">
+              <div class="stat-item">
+                <span class="stat-label">Total Solved</span>
+                <span id="leetcodeTotal" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Easy</span>
+                <span id="leetcodeEasy" class="stat-value easy">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Medium</span>
+                <span id="leetcodeMedium" class="stat-value medium">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Hard</span>
+                <span id="leetcodeHard" class="stat-value hard">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Contest Rating</span>
+                <span id="leetcodeRating" class="stat-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="codeforcesCard" class="stat-card hidden">
+            <div class="card-header codeforces">
+              <h3>Codeforces</h3>
+            </div>
+            <div class="card-body">
+              <div class="stat-item">
+                <span class="stat-label">Rating</span>
+                <span id="codeforcesRating" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Max Rating</span>
+                <span id="codeforcesMaxRating" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Rank</span>
+                <span id="codeforcesRank" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Contests</span>
+                <span id="codeforcesContests" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Country</span>
+                <span id="codeforcesCountry" class="stat-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="codechefCard" class="stat-card hidden">
+            <div class="card-header codechef">
+              <h3>CodeChef</h3>
+            </div>
+            <div class="card-body">
+              <div class="stat-item">
+                <span class="stat-label">Rating</span>
+                <span id="codechefRating" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Max Rating</span>
+                <span id="codechefMaxRating" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Stars</span>
+                <span id="codechefStars" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Global Rank</span>
+                <span id="codechefGlobalRank" class="stat-value">-</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Fully Solved</span>
+                <span id="codechefFullySolved" class="stat-value">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="message" class="message hidden"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "codeprofile",
+  "version": "1.0.0",
+  "description": "A unified dashboard to track competitive programming stats from LeetCode, Codeforces, and CodeChef",
+  "private": true,
+  "scripts": {
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "install:backend": "cd backend && npm install"
+  },
+  "keywords": ["codeprofile", "competitive-programming", "leetcode", "codeforces", "codechef"],
+  "author": "",
+  "license": "ISC"
+}
