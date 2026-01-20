@@ -3,12 +3,32 @@
   "version": "1.0.0",
   "description": "A unified dashboard to track competitive programming stats from LeetCode, Codeforces, and CodeChef",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "cd backend && npm run dev",
     "start": "cd backend && npm start",
-    "install:backend": "cd backend && npm install"
+    "vercel-build": "echo 'Build complete'"
   },
-  "keywords": ["codeprofile", "competitive-programming", "leetcode", "codeforces", "codechef"],
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "cookie-parser": "^1.4.6",
+    "axios": "^1.6.2",
+    "jsdom": "^23.0.1",
+    "node-fetch": "^3.3.2",
+    "express-rate-limit": "^7.1.5"
+  },
+  "keywords": [
+    "codeprofile",
+    "competitive-programming",
+    "leetcode",
+    "codeforces",
+    "codechef"
+  ],
   "author": "",
   "license": "ISC"
 }
